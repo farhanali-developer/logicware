@@ -113,7 +113,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-                {/* Google tag (gtag.js) */}
+        {/* Google tag (gtag.js) */}
         {GA_ID && (
           <>
             <Script
