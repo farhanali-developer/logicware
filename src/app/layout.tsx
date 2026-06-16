@@ -113,15 +113,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-      </head>
-      <body className="bg-[var(--color-bg)] text-[var(--color-text-primary)] font-poppins antialiased">
-        <RecaptchaProvider siteKey={RECAPTCHA_KEY}>
-          {children}
-        </RecaptchaProvider>
-        <ChatWidget />
-        <Analytics />
-
-        {/* Google tag (gtag.js) */}
+                {/* Google tag (gtag.js) */}
         {GA_ID && (
           <>
             <Script
@@ -138,6 +130,13 @@ export default function RootLayout({
             </Script>
           </>
         )}
+      </head>
+      <body className="bg-[var(--color-bg)] text-[var(--color-text-primary)] font-poppins antialiased">
+        <RecaptchaProvider siteKey={RECAPTCHA_KEY}>
+          {children}
+        </RecaptchaProvider>
+        <ChatWidget />
+        <Analytics />
       </body>
     </html>
   );
