@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import RecaptchaProvider from "@/components/providers/RecaptchaProvider";
 import ChatWidget from "@/components/chat/ChatWidget";
 import "./globals.css";
@@ -118,8 +119,9 @@ export default function RootLayout({
           {children}
         </RecaptchaProvider>
         <ChatWidget />
+        <Analytics />
 
-        {/* Google Analytics GA4 */}
+        {/* Google tag (gtag.js) */}
         {GA_ID && (
           <>
             <Script
@@ -131,7 +133,7 @@ export default function RootLayout({
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', '${GA_ID}', { page_path: window.location.pathname });
+                gtag('config', '${GA_ID}');
               `}
             </Script>
           </>
