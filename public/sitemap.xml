@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Core pages -->
+  <url><loc>https://logicware.tech/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://logicware.tech/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://logicware.tech/services</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://logicware.tech/how-it-works</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://logicware.tech/contact</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- Legal & Compliance -->
+  <url><loc>https://logicware.tech/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://logicware.tech/terms-of-service</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://logicware.tech/cookie-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://logicware.tech/hipaa-baa</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+
+  <!-- Careers -->
+  <url><loc>https://logicware.tech/careers</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://logicware.tech/careers/medical-billing-specialist</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://logicware.tech/careers/insurance-verification-specialist</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://logicware.tech/careers/provider-credentialing-coordinator</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://logicware.tech/careers/sales-specialist</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://logicware.tech/careers/client-success-associate</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+
+  <!-- Blog — original posts -->
+  <url><loc>https://logicware.tech/blogs</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://logicware.tech/blogs/common-reasons-mental-health-claims-get-denied</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://logicware.tech/blogs/cpt-codes-90791-vs-90837</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://logicware.tech/blogs/verify-insurance-benefits-before-first-session</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://logicware.tech/blogs/in-network-vs-out-of-network-billing</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://logicware.tech/blogs/credentialing-101-how-long-does-it-take</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://logicware.tech/blogs/daily-claim-submission-vs-monthly-batching</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://logicware.tech/blogs/reading-your-eob-plain-english-guide</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://logicware.tech/blogs/hipaa-compliance-checklist-outsourced-billing</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Blog — SEO content -->
+  <url><loc>https://logicware.tech/blogs/cpt-codes-mental-health-billing-guide-2025</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://logicware.tech/blogs/insurance-credentialing-therapist-delaware-lcsw-lpc</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://logicware.tech/blogs/superbill-vs-direct-insurance-billing-therapists</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://logicware.tech/blogs/mental-health-insurance-claim-denials-how-to-fix</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://logicware.tech/blogs/should-you-outsource-mental-health-billing</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://logicware.tech/blogs/delaware-medicaid-mental-health-billing-dmap</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+</urlset>
