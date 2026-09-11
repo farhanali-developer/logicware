@@ -21,7 +21,7 @@ const STEPS = [
     number: "01",
     title: "Free Billing Audit",
     duration: "Day 1–2",
-    body: "You tell us about your practice and share your last 30 days of claims. We review your current billing setup, denial patterns, and AR aging — at no cost and with no obligation.",
+    body: "You tell us about your practice and share your last 30 days of claims. We review your current billing setup, denial patterns, and AR aging, at no cost and with no obligation.",
     icon: (
       <svg {...ICON_PROPS}>
         <circle cx="11" cy="11" r="8" />
@@ -33,7 +33,7 @@ const STEPS = [
     number: "02",
     title: "Onboarding & System Setup",
     duration: "Day 3–5",
-    body: "We sign a BAA, connect to your EHR/clearinghouse, and set up secure access to the systems we need — SimplePractice, TherapyNotes, or whatever you already use. No workflow changes on your end.",
+    body: "We sign a BAA, connect to your practice management software and clearinghouse, and set up secure access to the systems we need: Dentrix, Eaglesoft, Open Dental, or whatever you already use. No workflow changes on your end.",
     icon: (
       <svg {...ICON_PROPS}>
         <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -45,7 +45,7 @@ const STEPS = [
     number: "03",
     title: "Insurance Verification",
     duration: "Ongoing",
-    body: "Every new patient's benefits are verified before their first session — in-network and out-of-network coverage, copays, deductibles, and prior authorization requirements.",
+    body: "Every new patient's benefits are verified before their first appointment: in-network and out-of-network coverage, annual maximums, deductibles, and prior authorization requirements.",
     icon: (
       <svg {...ICON_PROPS}>
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -58,7 +58,7 @@ const STEPS = [
     number: "04",
     title: "Daily Claim Submission",
     duration: "Every business day",
-    body: "Sessions logged by end of business are scrubbed for errors and submitted electronically the same day via clearinghouse. No batching, no backlogs.",
+    body: "Appointments logged by end of business are scrubbed for errors and submitted electronically the same day via clearinghouse. No batching, no backlogs.",
     icon: (
       <svg {...ICON_PROPS}>
         <path d="m22 2-7 20-4-9-9-4Z" />
@@ -70,7 +70,7 @@ const STEPS = [
     number: "05",
     title: "Payment Posting & Denial Management",
     duration: "Every business day",
-    body: "Payments are posted and reconciled daily. Any denial is reviewed, corrected, and resubmitted within the payer's deadline — or appealed if needed.",
+    body: "Payments are posted and reconciled daily. Any denial is reviewed, corrected, and resubmitted within the payer's deadline, or appealed if needed.",
     icon: (
       <svg {...ICON_PROPS}>
         <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
@@ -98,8 +98,8 @@ const STEPS = [
 
 const FAQS = [
   {
-    q: "Do I need to switch my EHR or billing software?",
-    a: "No. We work within your existing EHR or practice management system — SimplePractice, TherapyNotes, and most major platforms are supported.",
+    q: "Do I need to switch my practice management software?",
+    a: "No. We work within your existing practice management system. Dentrix, Eaglesoft, Open Dental, Curve Dental, and most major platforms are supported.",
   },
   {
     q: "How long does onboarding take?",
@@ -107,7 +107,7 @@ const FAQS = [
   },
   {
     q: "What does the free billing audit actually involve?",
-    a: "You share your last 30 days of claims data. We review submission accuracy, denial rates, and AR aging, and send you a short report — whether or not you decide to work with us.",
+    a: "You share your last 30 days of claims data. We review submission accuracy, denial rates, and AR aging, and send you a short report whether or not you decide to work with us.",
   },
   {
     q: "Is there a long-term contract?",
@@ -164,7 +164,7 @@ export default function HowItWorksPage() {
       <PageBanner
           badge="How It Works"
           title="From Free Audit to Faster Revenue"
-          subtitle="Here's exactly what happens when you start working with Logicware — from your first conversation to ongoing monthly reporting."
+          subtitle="Here's exactly what happens when you start working with Logicware, from your first conversation to ongoing monthly reporting."
           iconPath="M3 3v18h18M7 16l4-8 4 4 4-8"
         />
       <main className="bg-[var(--color-bg)] min-h-screen">

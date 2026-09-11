@@ -12,28 +12,28 @@ export interface Job {
 export const JOBS: Job[] = [
   {
     slug: "medical-billing-specialist",
-    title: "Medical Billing Specialist",
+    title: "Dental Billing Specialist",
     type: "Full-time",
     location: "Onsite · Karachi, Pakistan",
     summary:
-      "Handle daily claim submission, payment posting, and denial management for a portfolio of US mental health practices. You'll work closely with our team to keep client AR aging low and clean claim rates high.",
+      "Handle daily claim submission, payment posting, and denial management for a portfolio of US dental practices. You'll work closely with our team to keep client AR aging low and clean claim rates high.",
     responsibilities: [
-      "Submit electronic claims (CMS-1500) daily via clearinghouse for assigned practices",
+      "Submit electronic claims (ADA Dental Claim Form) daily via clearinghouse for assigned practices",
       "Post payments and reconcile EOBs/ERAs against expected reimbursement",
       "Review denied and rejected claims, correct errors, and resubmit within payer deadlines",
       "Track accounts receivable aging and flag accounts that need follow-up",
       "Communicate claim status updates to the client success team",
     ],
     requirements: [
-      "1+ years of US medical billing experience (mental/behavioral health a plus)",
-      "Familiarity with CPT codes 90791, 90834, 90837, 90847, 90853",
-      "Experience with clearinghouses and EHRs such as SimplePractice or TherapyNotes",
+      "1+ years of US dental billing experience",
+      "Familiarity with CDT codes (D0120, D0150, D1110, D2140–D2394, D4341)",
+      "Experience with clearinghouses and dental practice management software such as Dentrix, Eaglesoft, or Open Dental",
       "Strong attention to detail and comfort working US business-hour shifts",
       "Based in or able to commute daily to our Karachi office",
     ],
     niceToHave: [
       "Experience with insurance appeals and reconsiderations",
-      "Working knowledge of ICD-10 diagnosis coding",
+      "Working knowledge of tooth numbering and surface documentation conventions",
     ],
   },
   {
@@ -42,24 +42,24 @@ export const JOBS: Job[] = [
     type: "Full-time",
     location: "Onsite · Karachi, Pakistan",
     summary:
-      "Verify patient insurance benefits, eligibility, copays, and prior authorization requirements before appointments, ensuring our clients' patients never face billing surprises.",
+      "Verify patient dental insurance benefits, eligibility, annual maximums, and frequency limitations before appointments, ensuring our clients' patients never face billing surprises.",
     responsibilities: [
       "Run eligibility and benefits checks (VOB/VOE) for new and returning patients",
-      "Confirm in-network vs. out-of-network coverage, copays, and deductibles",
-      "Identify and flag prior authorization or referral requirements",
-      "Document verification results clearly in the client's EHR",
+      "Confirm in-network vs. out-of-network coverage, remaining annual maximum, and deductibles",
+      "Identify and flag pre-treatment estimate or prior authorization requirements",
+      "Document verification results clearly in the client's practice management software",
       "Escalate coverage issues to the client success team before appointments",
     ],
     requirements: [
       "Experience with insurance eligibility verification (VOB/VOE)",
-      "Understanding of in-network vs. out-of-network benefits",
+      "Understanding of in-network vs. out-of-network dental benefits",
       "Comfortable navigating payer portals and calling insurance companies",
       "Detail-oriented with strong organizational skills",
       "Based in or able to commute daily to our Karachi office",
     ],
     niceToHave: [
-      "Experience with major US payers (Aetna, Cigna, BCBS, UnitedHealthcare)",
-      "Prior experience supporting mental/behavioral health practices",
+      "Experience with major US dental payers (Delta Dental, MetLife, Cigna Dental, Guardian)",
+      "Prior experience supporting general dentistry or specialty dental practices",
     ],
   },
   {
@@ -68,24 +68,24 @@ export const JOBS: Job[] = [
     type: "Full-time",
     location: "Onsite · Karachi, Pakistan",
     summary:
-      "Manage end-to-end credentialing and re-credentialing for providers across multiple insurance panels, including CAQH profile maintenance and application tracking.",
+      "Manage end-to-end credentialing and re-credentialing for dental providers across multiple insurance panels, including document tracking and application follow-up.",
     responsibilities: [
       "Prepare and submit payer credentialing and re-credentialing applications",
-      "Maintain and update provider CAQH profiles",
+      "Maintain and update provider credentialing document packets (license, malpractice, DEA)",
       "Track application status and follow up with payers until approval",
       "Maintain an accurate log of panel statuses and expiration dates per provider",
       "Coordinate with providers to collect required documentation",
     ],
     requirements: [
-      "Experience with payer credentialing and CAQH",
+      "Experience with payer credentialing processes",
       "Strong follow-up and documentation skills",
       "Ability to manage multiple applications and deadlines simultaneously",
-      "Familiarity with mental health provider enrollment a plus",
+      "Familiarity with dental provider enrollment a plus",
       "Based in or able to commute daily to our Karachi office",
     ],
     niceToHave: [
-      "Experience with NPI/PECOS and state Medicaid enrollment",
-      "Prior experience in a credentialing-focused role for behavioral health providers",
+      "Experience with NPI/NPPES and state Medicaid enrollment",
+      "Prior experience in a credentialing-focused role for dental providers",
     ],
   },
   {
@@ -94,9 +94,9 @@ export const JOBS: Job[] = [
     type: "Full-time",
     location: "Remote · United States",
     summary:
-      "Drive new business by connecting with solo therapists and small group practices, running free billing audits, and converting qualified leads into long-term billing clients.",
+      "Drive new business by connecting with solo dentists and small group practices, running free billing audits, and converting qualified leads into long-term billing clients.",
     responsibilities: [
-      "Source and qualify leads among solo therapists and small group practices",
+      "Source and qualify leads among solo dentists and small group practices",
       "Run discovery calls and present free billing audit findings",
       "Manage a pipeline of prospects through our CRM from first contact to signed agreement",
       "Collaborate with the onboarding team for a smooth client handoff",
@@ -109,7 +109,7 @@ export const JOBS: Job[] = [
       "Excellent written and verbal communication skills",
     ],
     niceToHave: [
-      "Existing network within mental health or healthcare practices",
+      "Existing network within dental or healthcare practices",
       "Experience selling outsourced services or BPO solutions",
     ],
   },
@@ -119,9 +119,9 @@ export const JOBS: Job[] = [
     type: "Full-time",
     location: "Remote · United States",
     summary:
-      "Be the friendly face of Logicware for our clients — handling onboarding, monthly report walkthroughs, and day-to-day questions about claims and payments.",
+      "Be the friendly face of Logicware for our clients, handling onboarding, monthly report walkthroughs, and day-to-day questions about claims and payments.",
     responsibilities: [
-      "Lead onboarding calls for new practices and coordinate EHR/clearinghouse setup",
+      "Lead onboarding calls for new practices and coordinate practice management software/clearinghouse setup",
       "Walk clients through their monthly reports and answer billing questions",
       "Act as the primary point of contact for client communication",
       "Relay client feedback and recurring issues to the billing team",
@@ -134,8 +134,8 @@ export const JOBS: Job[] = [
       "Organized, proactive, and empathetic",
     ],
     niceToHave: [
-      "Familiarity with SimplePractice, TherapyNotes, or similar EHRs",
-      "Experience working with mental health providers",
+      "Familiarity with Dentrix, Eaglesoft, Open Dental, or similar dental practice management software",
+      "Experience working with dental providers",
     ],
   },
 ];

@@ -38,7 +38,7 @@ const VALUES = [
       </svg>
     ),
     title: "Radically Transparent",
-    body: "No black boxes. You get monthly reports showing exactly what was billed, collected, denied, and recovered — in plain language, not billing jargon.",
+    body: "No black boxes. You get monthly reports showing exactly what was billed, collected, denied, and recovered, in plain language, not billing jargon.",
   },
   {
     icon: (
@@ -48,7 +48,7 @@ const VALUES = [
       </svg>
     ),
     title: "Specialists, Not Generalists",
-    body: "We focus exclusively on mental and behavioral health billing — CPT codes 90791, 90834, 90837, 90847, 90853, and the payer quirks that come with them.",
+    body: "We focus exclusively on dental billing: CDT codes D0120, D0150, D1110, D2140, D2740, D4341, and the payer quirks that come with them.",
   },
 ];
 
@@ -108,7 +108,7 @@ export default function AboutPage() {
       <PageBanner
           badge="About Logicware"
           title="A Billing Partner You Can Trust"
-          subtitle="Logicware LLC is a US-registered medical billing company built by a team with deep expertise in mental health revenue cycle management — so solo therapists and small practices never have to think about claims again."
+          subtitle="Logicware LLC is a US-registered dental billing company built by a team with deep expertise in dental revenue cycle management, so solo dentists and small practices never have to think about claims again."
           iconPath="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z"
         />
       <main className="bg-[var(--color-bg)] min-h-screen">
@@ -121,26 +121,24 @@ export default function AboutPage() {
             </h2>
             <p className="text-[var(--color-text-secondary)] text-base leading-[1.8]">
               Logicware was founded after years of watching talented
-              therapists, counselors, and psychologists lose hours every week
-              — and thousands of dollars every year — to billing they never
-              wanted to learn in the first place. Insurance portals, denial
-              codes, and AR aging reports aren&apos;t why anyone goes into
-              mental health care.
+              dentists lose hours every week, and thousands of dollars every
+              year, to billing they never wanted to learn in the first
+              place. Insurance portals, denial codes, and AR aging reports
+              aren&apos;t why anyone goes into dentistry.
             </p>
             <p className="text-[var(--color-text-secondary)] text-base leading-[1.8]">
-              We serve solo LCSWs, licensed counselors, psychologists,
-              psychiatrists, and small group practices across the United
-              States. From our remote operations hub, our team works US
-              business hours to make sure claims are submitted daily, denials
-              are resolved quickly, and you receive transparent monthly
-              reporting — without the cost and overhead of hiring an in-house
-              biller.
+              We serve solo general dentists, specialists, and small group
+              practices across the United States. From our remote operations
+              hub, our team works US business hours to make sure claims are
+              submitted daily, denials are resolved quickly, and you receive
+              transparent monthly reporting, without the cost and overhead
+              of hiring an in-house biller.
             </p>
             <p className="text-[var(--color-text-secondary)] text-base leading-[1.8]">
               Every client starts with a free billing audit. We review your
               last 30 days of claims, identify revenue you&apos;re leaving on
               the table, and show you exactly what working with us would look
-              like — before you commit to anything.
+              like before you commit to anything.
             </p>
           </div>
         </section>

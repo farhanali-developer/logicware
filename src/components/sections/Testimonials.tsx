@@ -90,7 +90,7 @@ export default function Testimonials() {
             Practices That Trust Logicware
           </h2>
           <p className="text-[var(--color-text-secondary)] text-center max-w-[560px]">
-            Real feedback from solo therapists and small practices we support
+            Real feedback from solo dentists and small practices we support
             every day.
           </p>
         </div>

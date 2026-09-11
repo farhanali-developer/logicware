@@ -10,7 +10,7 @@ import PageBanner from "@/components/ui/PageBanner";
 const SECTIONS = [
   {
     title: "What Is HIPAA and Why It Matters for Billing",
-    body: "The Health Insurance Portability and Accountability Act (HIPAA) establishes federal standards for protecting sensitive patient health information. When a therapist or mental health practice engages an outside billing company, that company becomes a Business Associate under HIPAA — a third party that creates, receives, maintains, or transmits Protected Health Information (PHI) on behalf of a covered entity. HIPAA requires that a formal written agreement — the Business Associate Agreement (BAA) — be in place before any PHI changes hands. Engaging a billing partner without a signed BAA is a HIPAA violation, regardless of how secure that partner's practices are.",
+    body: "The Health Insurance Portability and Accountability Act (HIPAA) establishes federal standards for protecting sensitive patient health information. When a dentist or dental practice engages an outside billing company, that company becomes a Business Associate under HIPAA: a third party that creates, receives, maintains, or transmits Protected Health Information (PHI) on behalf of a covered entity. HIPAA requires a formal written agreement, the Business Associate Agreement (BAA), before any PHI changes hands. Engaging a billing partner without a signed BAA is a HIPAA violation, regardless of how secure that partner's practices are.",
   },
   {
     title: "What Our BAA Covers",
@@ -22,7 +22,7 @@ const SECTIONS = [
   },
   {
     title: "Minimum Necessary Standard",
-    body: "Under HIPAA's Minimum Necessary standard, covered entities and their business associates may use or disclose only the PHI needed to accomplish the intended purpose. In practice, this means Logicware LLC requests only the patient information required to submit claims, post payments, and manage denials — not entire medical records. Our staff access is scoped to the specific accounts and functions each team member handles.",
+    body: "Under HIPAA's Minimum Necessary standard, covered entities and their business associates may use or disclose only the PHI needed to accomplish the intended purpose. In practice, this means Logicware LLC requests only the patient information required to submit claims, post payments, and manage denials, not entire medical records. Our staff access is scoped to the specific accounts and functions each team member handles.",
   },
   {
     title: "Breach Notification",
@@ -30,7 +30,7 @@ const SECTIONS = [
   },
   {
     title: "Your Responsibilities as a Covered Entity",
-    body: "As a mental health provider, you are a HIPAA covered entity and are responsible for your own compliance obligations independent of our BAA. This includes your own Notice of Privacy Practices for patients, maintaining the security of PHI within your own systems and practice, ensuring that any other business associates you engage (EHRs, clearinghouses, practice management tools) have signed BAAs with you, and training your staff on HIPAA requirements applicable to your practice.",
+    body: "As a dental provider, you are a HIPAA covered entity and are responsible for your own compliance obligations independent of our BAA. This includes your own Notice of Privacy Practices for patients, maintaining the security of PHI within your own systems and practice, ensuring that any other business associates you engage (practice management software, clearinghouses, imaging tools) have signed BAAs with you, and training your staff on HIPAA requirements applicable to your practice.",
   },
   {
     title: "Subcontractors and Downstream BAAs",

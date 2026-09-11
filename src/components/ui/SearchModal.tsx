@@ -160,7 +160,7 @@ export default function SearchModal({ open, onClose, onOpen }: SearchModalProps)
                 No results for &ldquo;{query}&rdquo;
               </p>
               <p className="text-xs text-[var(--color-text-muted)] mt-2">
-                Press <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface-2)] border border-[var(--color-border)]">Enter</kbd> to continue — you&apos;ll land on our 404 page.
+                Press <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface-2)] border border-[var(--color-border)]">Enter</kbd> to continue. You&apos;ll land on our 404 page.
               </p>
             </div>
           )}

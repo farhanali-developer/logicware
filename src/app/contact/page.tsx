@@ -28,7 +28,7 @@ const INITIAL_STATE: FormState = {
   practiceName: "",
   email: "",
   phone: "",
-  role: "LCSW",
+  role: "General Dentist (DDS/DMD)",
   practiceSize: "Solo",
   ehr: "",
   challenge: "",
@@ -73,7 +73,7 @@ const STEPS = [
   },
   {
     title: "You Get a Free Report",
-    body: "Receive a detailed PDF report with actionable findings — no cost, no obligation.",
+    body: "Receive a detailed PDF report with actionable findings, no cost, no obligation.",
     icon: (
       <svg {...ICON_PROPS}>
         <rect x="8" y="2" width="8" height="4" rx="1" />
@@ -266,7 +266,7 @@ export default function ContactPage() {
                         onChange={handleChange}
                         className={inputClasses}
                       >
-                        {["LCSW", "LPC", "Psychologist", "MFT", "Psychiatrist", "Other"].map(
+                        {["General Dentist (DDS/DMD)", "Orthodontist", "Periodontist", "Endodontist", "Oral Surgeon", "Pediatric Dentist", "Practice Manager", "Other"].map(
                           (option) => (
                             <option key={option} value={option} className="bg-[var(--color-bg)]">
                               {option}
@@ -297,7 +297,7 @@ export default function ContactPage() {
 
                   <div>
                     <label htmlFor="ehr" className={labelClasses}>
-                      Current EHR/Billing Software
+                      Current Practice Management Software
                     </label>
                     <input
                       id="ehr"
@@ -306,7 +306,7 @@ export default function ContactPage() {
                       value={form.ehr}
                       onChange={handleChange}
                       className={inputClasses}
-                      placeholder="e.g., SimplePractice, TherapyNotes..."
+                      placeholder="e.g., Dentrix, Eaglesoft, Open Dental..."
                     />
                   </div>
 

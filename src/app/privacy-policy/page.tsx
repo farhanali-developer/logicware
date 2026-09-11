@@ -9,7 +9,7 @@ import PageBanner from "@/components/ui/PageBanner";
 const SECTIONS = [
   {
     title: "1. Introduction",
-    body: "Logicware LLC (\"Logicware\", \"we\", \"us\", or \"our\") provides medical billing and revenue cycle management services to mental health practices across the United States. This Privacy Policy explains how we collect, use, disclose, and safeguard information when you visit our website or engage our services.",
+    body: "Logicware LLC (\"Logicware\", \"we\", \"us\", or \"our\") provides dental billing and revenue cycle management services to dental practices across the United States. This Privacy Policy explains how we collect, use, disclose, and safeguard information when you visit our website or engage our services.",
   },
   {
     title: "2. Information We Collect",
@@ -33,7 +33,7 @@ const SECTIONS = [
   },
   {
     title: "7. Third-Party Services",
-    body: "We may use third-party service providers — such as clearinghouses, EHR platforms, and communication tools — to deliver our services. These providers are contractually obligated to maintain the confidentiality and security of any information they handle on our behalf.",
+    body: "We may use third-party service providers, such as clearinghouses, practice management platforms, and communication tools, to deliver our services. These providers are contractually obligated to maintain the confidentiality and security of any information they handle on our behalf.",
   },
   {
     title: "8. Your Rights",

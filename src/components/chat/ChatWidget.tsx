@@ -10,7 +10,7 @@ type Message = {
 const STORAGE_KEY = "logicware-chat-history";
 
 const INITIAL_SYSTEM_PROMPT =
-  "Hi there! I’m the Logicware Assistant. I can help with questions about our mental health billing services — credentialing, claims, denial management, reporting, or how to get started. What can I help you with?";
+  "Hi there! I'm the Logicware Assistant. I can help with questions about our dental billing services: credentialing, claims, denial management, reporting, or how to get started. What can I help you with?";
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);

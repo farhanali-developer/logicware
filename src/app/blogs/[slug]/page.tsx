@@ -160,7 +160,7 @@ export default function BlogPostPage() {
             </h2>
             <p className="text-[var(--color-text-secondary)] text-sm leading-[1.7] max-w-[480px] mx-auto mb-6">
               Logicware handles claims, denials, credentialing, and reporting
-              for mental health practices — start with a free billing audit.
+              for dental practices. Start with a free billing audit.
             </p>
             <Link
               href="/contact"

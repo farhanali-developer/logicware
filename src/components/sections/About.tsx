@@ -44,7 +44,7 @@ const FEATURE_CARDS = [
       </svg>
     ),
     title: "95%+ Clean Claim Rate",
-    body: "We average a 95%+ first-pass acceptance rate across all mental health payer types.",
+    body: "We average a 95%+ first-pass acceptance rate across all dental payer types.",
   },
 ];
 
@@ -165,16 +165,15 @@ export default function About() {
 
           <div className="about-paragraphs flex flex-col gap-5 mb-12">
             <p className="about-paragraph text-[var(--color-text-secondary)] text-base leading-[1.8]">
-              Logicware LLC is a US-registered medical billing company operated
-              by a seasoned team with deep expertise in mental health revenue
-              cycle management. We serve solo LCSWs, licensed counselors,
-              psychologists, and small group practices across the United
-              States.
+              Logicware LLC is a US-registered dental billing company operated
+              by a seasoned team with deep expertise in dental revenue
+              cycle management. We serve solo dentists, specialists, and
+              small group practices across the United States.
             </p>
             <p className="about-paragraph text-[var(--color-text-secondary)] text-base leading-[1.8]">
               From our remote operations hub, we work US business hours to
               ensure your claims are submitted daily, denials are resolved
-              fast, and you receive transparent monthly reporting — without
+              fast, and you receive transparent monthly reporting, without
               the overhead of an in-house biller.
             </p>
           </div>

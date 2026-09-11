@@ -136,7 +136,7 @@ export default function Hero() {
         {/* LEFT COLUMN */}
         <div className="flex flex-col">
           <span className="hero-eyebrow inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-medium text-blue bg-[rgba(0,122,255,0.1)] border border-[rgba(0,122,255,0.3)] mb-6">
-            Mental Health Billing Specialists · Delaware LLC
+            Dental Billing Specialists · Delaware LLC
           </span>
 
           <h1
@@ -164,9 +164,9 @@ export default function Hero() {
           </h1>
 
           <p className="hero-subheading text-[var(--color-text-secondary)] text-lg font-light max-w-[520px] leading-[1.7] mb-8">
-            We handle the full billing cycle for solo therapists and mental
-            health practices across the US — from claim submission to denial
-            management — so you can focus entirely on your patients.
+            We handle the full billing cycle for solo dentists and dental
+            practices across the US, from claim submission to denial
+            management, so you can focus entirely on your patients.
           </p>
 
           <div className="flex flex-wrap gap-4 mb-8">

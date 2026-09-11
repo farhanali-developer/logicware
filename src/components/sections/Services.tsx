@@ -31,7 +31,7 @@ const SERVICES = [
     number: "02",
     anchor: "claim-submission",
     title: "Claim Submission",
-    body: "Daily electronic claim submission via clearinghouse using CMS-1500 format. We submit same-day for sessions logged by end of business.",
+    body: "Daily electronic claim submission via clearinghouse using the ADA Dental Claim Form. We submit same-day for appointments logged by end of business.",
     icon: (
       <svg {...ICON_PROPS}>
         <path d="m22 2-7 20-4-9-9-4Z" />
@@ -55,7 +55,7 @@ const SERVICES = [
     number: "04",
     anchor: "denial-management",
     title: "Denial Management",
-    body: "Denied claims are identified, corrected, and resubmitted within payer deadlines — recovering revenue that would otherwise be written off.",
+    body: "Denied claims are identified, corrected, and resubmitted within payer deadlines, recovering revenue that would otherwise be written off.",
     icon: (
       <svg {...ICON_PROPS}>
         <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
@@ -155,17 +155,17 @@ export default function Services() {
             className="text-[var(--color-text-primary)] font-bold text-center mb-4"
             style={{ fontSize: "clamp(28px, 3.5vw, 44px)" }}
           >
-            End-to-End Mental Health Billing
+            End-to-End Dental Billing
           </h2>
           <p className="text-[var(--color-text-secondary)] text-center max-w-[560px]">
-            Specialized billing services for therapists, LCSWs, psychologists,
-            and behavioral health practices.
+            Specialized billing services for solo dentists, specialists,
+            and dental practices.
           </p>
         </div>
 
         <div className="services-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {SERVICES.map((service) => (
-            <ServiceCard key={service.number} {...service} href={`/services#${service.anchor}`} />
+            <ServiceCard key={service.number} {...service} href={`/services/${service.anchor}`} />
           ))}
         </div>
 
@@ -177,10 +177,10 @@ export default function Services() {
           }}
         >
           <p className="text-sm text-[var(--color-text-secondary)]">
-            Specializing in: 90791 · 90834 · 90837 · 90832 · 90847 · 90853
+            Specializing in: D0120 · D0150 · D1110 · D2140 · D2740 · D4341
           </p>
           <p className="text-xs text-blue mt-2">
-            The core CPT codes for mental health — we know them inside out.
+            The core CDT codes for dental billing. We know them inside out.
           </p>
         </div>
       </div>

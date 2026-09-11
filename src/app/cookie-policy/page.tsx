@@ -17,7 +17,7 @@ const SECTIONS = [
   },
   {
     title: "3. Types of Cookies We Use",
-    body: "We use three categories of cookies on our website. Essential cookies are required for the website to function and cannot be switched off. These include session management and security tokens. Analytics cookies are used to understand how visitors use our site — for example, which pages are visited most often and whether visitors encounter errors. We use Google Analytics (GA4) for this purpose. Preference cookies remember your settings, such as your selected color theme (light or dark mode), so you do not need to reset them on each visit.",
+    body: "We use three categories of cookies on our website. Essential cookies are required for the website to function and cannot be switched off. These include session management and security tokens. Analytics cookies help us understand how visitors use our site, for example, which pages are visited most often and whether visitors encounter errors. We use Google Analytics (GA4) for this purpose. Preference cookies remember your settings, such as your selected color theme (light or dark mode), so you do not need to reset them on each visit.",
   },
   {
     title: "4. Google Analytics",
@@ -25,11 +25,11 @@ const SECTIONS = [
   },
   {
     title: "5. Third-Party Cookies",
-    body: "Some pages on our website may include content or links from third-party services — such as embedded maps, social media links, or external tools — that may set their own cookies. Logicware LLC does not control these third-party cookies. We recommend reviewing the privacy and cookie policies of any third-party service you interact with through our website.",
+    body: "Some pages on our website may include content or links from third-party services, such as embedded maps, social media links, or external tools, that may set their own cookies. Logicware LLC does not control these third-party cookies. We recommend reviewing the privacy and cookie policies of any third-party service you interact with through our website.",
   },
   {
     title: "6. Managing and Disabling Cookies",
-    body: "You can control cookies through your browser settings. Most browsers allow you to refuse cookies, delete existing cookies, or be notified when a cookie is set. Note that disabling certain cookies may affect site functionality — for example, disabling preference cookies means your theme setting will not be remembered between visits. Instructions for managing cookies are available in your browser's help documentation.",
+    body: "You can control cookies through your browser settings. Most browsers allow you to refuse cookies, delete existing cookies, or be notified when a cookie is set. Note that disabling certain cookies may affect site functionality: disabling preference cookies, for example, means your theme setting will not be remembered between visits. Instructions for managing cookies are available in your browser's help documentation.",
   },
   {
     title: "7. Do Not Track",

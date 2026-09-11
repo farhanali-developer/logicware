@@ -87,8 +87,8 @@ export default function BlogPage() {
       <Navbar />
       <PageBanner
           badge="Blogs"
-          title="Billing Insights for Mental Health Practices"
-          subtitle="Practical guides on claims, credentialing, denials, and revenue cycle management — written for therapists, not billers."
+          title="Billing Insights for Dental Practices"
+          subtitle="Practical guides on claims, credentialing, denials, and revenue cycle management, written for dentists, not billers."
           iconPath="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
         />
       <main className="bg-[var(--color-bg)] min-h-screen">

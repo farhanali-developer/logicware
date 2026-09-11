@@ -31,7 +31,7 @@ const PERKS = [
   },
   {
     title: "Growth-Focused",
-    body: "We're a small, growing team — your work has visible impact and your role grows with the company.",
+    body: "We're a small, growing team. Your work has visible impact and your role grows with the company.",
     icon: (
       <svg {...ICON_PROPS}>
         <path d="M3 3v18h18" />
@@ -41,7 +41,7 @@ const PERKS = [
   },
   {
     title: "Healthcare-Focused Mission",
-    body: "Help mental health providers get paid fairly and on time, so they can focus on patient care.",
+    body: "Help dental providers get paid fairly and on time, so they can focus on patient care.",
     icon: (
       <svg {...ICON_PROPS}>
         <path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" />
@@ -98,8 +98,8 @@ export default function CareersPage() {
       <Navbar />
       <PageBanner
           badge="Careers"
-          title="Help Us Fix Mental Health Billing"
-          subtitle="Logicware operates from two offices — Wilmington, Delaware and Karachi, Pakistan — bringing together US-based sales and client success with a dedicated billing operations team."
+          title="Help Us Fix Dental Billing"
+          subtitle="Logicware operates from two offices, Wilmington, Delaware and Karachi, Pakistan, bringing together US-based sales and client success with a dedicated billing operations team."
           iconPath="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM12 12h.01M8 12h.01M16 12h.01"
         />
       <main className="bg-[var(--color-bg)] min-h-screen">

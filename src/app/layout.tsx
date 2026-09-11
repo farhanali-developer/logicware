@@ -15,9 +15,9 @@ const poppins = Poppins({
 
 const SITE_URL = "https://logicware.tech";
 const SITE_NAME = "Logicware LLC";
-const SITE_TITLE = "Logicware LLC | Mental Health Billing Specialists";
+const SITE_TITLE = "Logicware LLC | Dental Billing Specialists";
 const SITE_DESCRIPTION =
-  "Logicware LLC handles end-to-end medical billing for solo therapists and small mental health practices across the US — claim submission, denial management, credentialing, and transparent reporting.";
+  "Logicware LLC handles end-to-end dental billing for solo dentists and small dental practices across the US: claim submission, denial management, credentialing, and transparent reporting.";
 const OG_IMAGE = `${SITE_URL}/favicon/android-chrome-512x512.png`;
 
 export const metadata: Metadata = {
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 512,
         height: 512,
-        alt: "Logicware LLC — Mental Health Billing Specialists",
+        alt: "Logicware LLC, Dental Billing Specialists",
       },
     ],
   },
@@ -77,7 +77,7 @@ const organizationSchema = {
   url: "https://logicware.tech",
   logo: "https://logicware.tech/favicon/android-chrome-512x512.png",
   description:
-    "Mental health billing specialists handling claim submission, denial management, credentialing, and reporting for solo therapists and small practices across the US.",
+    "Dental billing specialists handling claim submission, denial management, credentialing, and reporting for solo dentists and small practices across the US.",
   email: "contact@logicware.tech",
   address: {
     "@type": "PostalAddress",

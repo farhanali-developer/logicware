@@ -6,12 +6,12 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import Logo from "@/components/ui/Logo";
 
 const SERVICE_LINKS = [
-  { label: "Insurance Verification", href: "/services#insurance-verification" },
-  { label: "Claim Submission", href: "/services#claim-submission" },
-  { label: "Payment Posting", href: "/services#payment-posting" },
-  { label: "Denial Management", href: "/services#denial-management" },
-  { label: "Monthly Reporting", href: "/services#monthly-reporting" },
-  { label: "Provider Credentialing", href: "/services#provider-credentialing" },
+  { label: "Insurance Verification", href: "/services/insurance-verification" },
+  { label: "Claim Submission", href: "/services/claim-submission" },
+  { label: "Payment Posting", href: "/services/payment-posting" },
+  { label: "Denial Management", href: "/services/denial-management" },
+  { label: "Monthly Reporting", href: "/services/monthly-reporting" },
+  { label: "Provider Credentialing", href: "/services/provider-credentialing" },
 ];
 
 const COMPANY_LINKS = [
@@ -62,7 +62,7 @@ export default function Footer() {
             <Logo height={32} />
           </div>
           <p className="text-sm text-[var(--color-text-muted)] mt-3 max-w-[220px] leading-[1.6]">
-            Mental health billing specialists. US-registered. HIPAA compliant.
+            Dental billing specialists. US-registered. HIPAA compliant.
           </p>
           <div className="flex items-center gap-3 mt-4">
             <a

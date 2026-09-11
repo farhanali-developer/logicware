@@ -13,7 +13,7 @@ const SECTIONS = [
   },
   {
     title: "2. Description of Services",
-    body: "Logicware LLC provides medical billing, revenue cycle management, provider credentialing, insurance verification, and related administrative services to mental health practices and healthcare providers. The specific scope of services provided to each client is governed by the individual service agreement between Logicware LLC and that client.",
+    body: "Logicware LLC provides dental billing, revenue cycle management, provider credentialing, insurance verification, and related administrative services to dental practices and providers. The specific scope of services provided to each client is governed by the individual service agreement between Logicware LLC and that client.",
   },
   {
     title: "3. Client Responsibilities",
@@ -21,7 +21,7 @@ const SECTIONS = [
   },
   {
     title: "4. Intellectual Property",
-    body: "All content on this website — including text, graphics, logos, and software — is the property of Logicware LLC or its content suppliers and is protected by applicable intellectual property laws. You may not reproduce, distribute, modify, or create derivative works without our express written permission.",
+    body: "All content on this website, including text, graphics, logos, and software, is the property of Logicware LLC or its content suppliers and is protected by applicable intellectual property laws. You may not reproduce, distribute, modify, or create derivative works without our express written permission.",
   },
   {
     title: "5. Confidentiality",
