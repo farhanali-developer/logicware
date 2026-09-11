@@ -1,55 +1,135 @@
 import { NextRequest, NextResponse } from "next/server";
 import { transporter } from "@/lib/mailer";
+import { applyNotificationEmail, applyAutoReplyEmail, type ApplySubmission } from "@/lib/emailTemplates";
+import { validateName, validateEmail, validatePhone, validateRequiredText } from "@/lib/validation";
+import { verifyRecaptcha, RECAPTCHA_FAILURE_MESSAGE } from "@/lib/recaptcha";
+import { checkRateLimit, getClientIp, RATE_LIMIT_MESSAGE } from "@/lib/rateLimit";
+
+const MAX_PDF_BYTES = 8 * 1024 * 1024; // 8MB
+
+interface PdfCheck {
+  error: string | null;
+  buffer?: Buffer;
+}
+
+/** Server-side PDF validation: size, extension, and a magic-byte check on the actual file contents. */
+async function checkPdfFile(file: File | null, required: boolean, label: string): Promise<PdfCheck> {
+  if (!file || file.size === 0) {
+    return { error: required ? `${label} is required.` : null };
+  }
+  if (file.size > MAX_PDF_BYTES) {
+    return { error: `${label} must be smaller than 8MB.` };
+  }
+  if (!/\.pdf$/i.test(file.name)) {
+    return { error: `${label} must be a PDF file.` };
+  }
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const isPdfMagic = buffer.subarray(0, 5).toString("latin1") === "%PDF-";
+  if (!isPdfMagic) {
+    return { error: `${label} does not appear to be a valid PDF file.` };
+  }
+  return { error: null, buffer };
+}
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    const rateLimit = checkRateLimit(`apply:${ip}`);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { ok: false, error: RATE_LIMIT_MESSAGE },
+        { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds ?? 600) } }
+      );
+    }
+
     const formData = await req.formData();
 
-    const firstName = formData.get("firstName") as string;
-    const lastName = formData.get("lastName") as string;
-    const email = formData.get("email") as string;
-    const phone = formData.get("phone") as string;
-    const message = formData.get("message") as string;
-    const jobTitle = formData.get("jobTitle") as string;
-    const jobLocation = formData.get("jobLocation") as string;
+    const firstName = (formData.get("firstName") as string) ?? "";
+    const lastName = (formData.get("lastName") as string) ?? "";
+    const email = (formData.get("email") as string) ?? "";
+    const phone = (formData.get("phone") as string) ?? "";
+    const message = (formData.get("message") as string) ?? "";
+    const jobTitle = (formData.get("jobTitle") as string) ?? "";
+    const jobLocation = (formData.get("jobLocation") as string) ?? "";
     const resumeFile = formData.get("resume") as File | null;
     const coverLetterFile = formData.get("coverLetter") as File | null;
 
+    if (!jobTitle.trim() || !jobLocation.trim()) {
+      return NextResponse.json({ ok: false, error: "Invalid job reference" }, { status: 400 });
+    }
+
+    const errors: Record<string, string> = {};
+    const setErr = (field: string, err: string | null) => {
+      if (err) errors[field] = err;
+    };
+
+    setErr("firstName", validateName(firstName, "First name"));
+    setErr("lastName", validateName(lastName, "Last name"));
+    setErr("email", validateEmail(email));
+    setErr("phone", validatePhone(phone, true));
+    setErr("message", validateRequiredText(message, "This field", { min: 10, max: 3000 }));
+
+    const resumeCheck = await checkPdfFile(resumeFile, true, "Resume");
+    setErr("resume", resumeCheck.error);
+
+    const coverLetterCheck = await checkPdfFile(coverLetterFile, false, "Cover letter");
+    setErr("coverLetter", coverLetterCheck.error);
+
+    if (Object.keys(errors).length > 0) {
+      return NextResponse.json({ ok: false, errors }, { status: 400 });
+    }
+
+    const recaptchaToken = (formData.get("recaptchaToken") as string) ?? "";
+    const recaptcha = await verifyRecaptcha(recaptchaToken, "apply");
+    if (!recaptcha.ok) {
+      console.error("Apply reCAPTCHA rejection:", recaptcha.reason);
+      return NextResponse.json({ ok: false, error: RECAPTCHA_FAILURE_MESSAGE }, { status: 403 });
+    }
+
     const attachments: { filename: string; content: Buffer; contentType: string }[] = [];
-
-    if (resumeFile && resumeFile.size > 0) {
-      const buf = Buffer.from(await resumeFile.arrayBuffer());
-      attachments.push({ filename: resumeFile.name, content: buf, contentType: resumeFile.type });
+    if (resumeFile && resumeCheck.buffer) {
+      attachments.push({ filename: resumeFile.name, content: resumeCheck.buffer, contentType: "application/pdf" });
+    }
+    if (coverLetterFile && coverLetterCheck.buffer) {
+      attachments.push({ filename: coverLetterFile.name, content: coverLetterCheck.buffer, contentType: "application/pdf" });
     }
 
-    if (coverLetterFile && coverLetterFile.size > 0) {
-      const buf = Buffer.from(await coverLetterFile.arrayBuffer());
-      attachments.push({ filename: coverLetterFile.name, content: buf, contentType: coverLetterFile.type });
-    }
+    const submission: ApplySubmission = {
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      message: message.trim(),
+      jobTitle,
+      jobLocation,
+      resumeFileName: resumeFile?.name,
+      coverLetterFileName: coverLetterFile?.name,
+    };
 
-    const html = `
-      <h2>New Job Application — ${jobTitle}</h2>
-      <table cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:sans-serif;font-size:14px">
-        <tr><td><strong>Name</strong></td><td>${firstName} ${lastName}</td></tr>
-        <tr><td><strong>Email</strong></td><td><a href="mailto:${email}">${email}</a></td></tr>
-        <tr><td><strong>Phone</strong></td><td>${phone || "—"}</td></tr>
-        <tr><td><strong>Role</strong></td><td>${jobTitle}</td></tr>
-        <tr><td><strong>Location</strong></td><td>${jobLocation}</td></tr>
-        <tr><td><strong>Resume</strong></td><td>${resumeFile?.name ?? "Not provided"}</td></tr>
-        <tr><td><strong>Cover Letter</strong></td><td>${coverLetterFile?.name ?? "Not provided"}</td></tr>
-      </table>
-      <h3 style="margin-top:16px">Why a good fit</h3>
-      <p style="font-family:sans-serif;font-size:14px">${message || "—"}</p>
-    `;
+    const notification = applyNotificationEmail(submission);
 
     await transporter.sendMail({
       from: `"Logicware Careers" <${process.env.SMTP_USER}>`,
       to: "careers@logicware.tech",
-      replyTo: email,
-      subject: `Application: ${jobTitle} — ${firstName} ${lastName}`,
-      html,
+      replyTo: submission.email,
+      subject: notification.subject,
+      html: notification.html,
       attachments,
     });
+
+    try {
+      const autoReply = applyAutoReplyEmail(submission);
+      await transporter.sendMail({
+        from: `"Logicware Careers" <${process.env.SMTP_USER}>`,
+        to: submission.email,
+        replyTo: "careers@logicware.tech",
+        subject: autoReply.subject,
+        html: autoReply.html,
+      });
+    } catch (autoReplyErr) {
+      // Don't fail the request over a confirmation email; the application notification already went through.
+      console.error("Apply auto-reply error:", autoReplyErr);
+    }
 
     return NextResponse.json({ ok: true });
   } catch (err) {

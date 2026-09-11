@@ -7,7 +7,18 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { gsap, useGSAP } from "@/lib/gsap";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import PhoneField from "@/components/ui/PhoneField";
+import FieldError from "@/components/ui/FieldError";
+import Req from "@/components/ui/Req";
 import { getJobBySlug, JOBS } from "@/lib/jobs";
+import {
+  sanitizeNameInput,
+  validateName,
+  validateEmail,
+  validatePhone,
+  validateRequiredText,
+  validatePdfFile,
+} from "@/lib/validation";
 
 interface FormState {
   firstName: string;
@@ -20,6 +31,8 @@ interface FormState {
   consent: boolean;
 }
 
+type FieldName = keyof FormState;
+
 const INITIAL_STATE: FormState = {
   firstName: "",
   lastName: "",
@@ -31,26 +44,57 @@ const INITIAL_STATE: FormState = {
   consent: false,
 };
 
+function validateField(name: FieldName, value: FormState[FieldName]): string | null {
+  switch (name) {
+    case "firstName":
+      return validateName(value as string, "First name");
+    case "lastName":
+      return validateName(value as string, "Last name");
+    case "email":
+      return validateEmail(value as string);
+    case "phone":
+      return validatePhone(value as string, true);
+    case "message":
+      return validateRequiredText(value as string, "This field", { min: 10, max: 3000 });
+    case "resume":
+      return validatePdfFile(value as File | null, true, "Resume").error;
+    case "coverLetter":
+      return validatePdfFile(value as File | null, false, "Cover letter").error;
+    case "consent":
+      return value ? null : "Please confirm to continue.";
+    default:
+      return null;
+  }
+}
+
+function validateAll(values: FormState): Record<FieldName, string | null> {
+  const result = {} as Record<FieldName, string | null>;
+  (Object.keys(values) as FieldName[]).forEach((key) => {
+    result[key] = validateField(key, values[key]);
+  });
+  return result;
+}
+
 const inputClasses =
   "w-full rounded-lg px-4 py-3 text-[15px] font-poppins text-[var(--color-text-primary)] bg-[var(--color-surface-3)] border border-[var(--color-border-strong)] placeholder-[var(--color-text-faint)] transition-all duration-200 focus:outline-none focus:border-blue focus:bg-[rgba(0,122,255,0.05)] focus:ring-[3px] focus:ring-[rgba(0,122,255,0.1)]";
 
-const labelClasses = "block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5";
+const inputErrorClasses = "border-red-500 focus:border-red-500 focus:ring-[rgba(239,68,68,0.15)]";
 
-function Req() {
-  return <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>;
-}
+const labelClasses = "block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5";
 
 function FileUploadField({
   id,
   label,
   required,
   file,
+  error,
   onChange,
 }: {
   id: string;
   label: string;
   required?: boolean;
   file: File | null;
+  error?: string | null;
   onChange: (file: File | null) => void;
 }) {
   return (
@@ -60,7 +104,9 @@ function FileUploadField({
       </label>
       <label
         htmlFor={id}
-        className="flex items-center gap-3 w-full rounded-lg px-4 py-3 text-[15px] font-poppins bg-[var(--color-surface-3)] border border-dashed border-[var(--color-border-strong)] cursor-pointer transition-all duration-200 hover:border-blue hover:bg-[rgba(0,122,255,0.05)]"
+        className={`flex items-center gap-3 w-full rounded-lg px-4 py-3 text-[15px] font-poppins bg-[var(--color-surface-3)] border border-dashed cursor-pointer transition-all duration-200 hover:border-blue hover:bg-[rgba(0,122,255,0.05)] ${
+          error ? "border-red-500" : "border-[var(--color-border-strong)]"
+        }`}
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 text-[var(--color-text-muted)]">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -75,11 +121,11 @@ function FileUploadField({
         id={id}
         name={id}
         type="file"
-        required={required}
-        accept=".pdf"
+        accept=".pdf,application/pdf"
         onChange={(e) => onChange(e.target.files?.[0] ?? null)}
         className="sr-only"
       />
+      <FieldError message={error} />
     </div>
   );
 }
@@ -109,7 +155,10 @@ export default function JobDetailPage() {
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const [form, setForm] = useState<FormState>(INITIAL_STATE);
+  const [errors, setErrors] = useState<Partial<Record<FieldName, string | null>>>({});
+  const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "success">("idle");
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const pageRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -120,44 +169,107 @@ export default function JobDetailPage() {
     );
   }, []);
 
+  const setFieldValue = (name: FieldName, value: FormState[FieldName]) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (touched[name]) {
+      setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
+    }
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
+    const field = name as FieldName;
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
-      setForm((prev) => ({ ...prev, [name]: checked }));
-    } else {
-      setForm((prev) => ({ ...prev, [name]: value }));
+      setFieldValue(field, checked);
+      return;
     }
+    const nextValue = field === "firstName" || field === "lastName" ? sanitizeNameInput(value) : value;
+    setFieldValue(field, nextValue);
   };
 
-  const handleSubmit = useCallback(async (e: FormEvent) => {
-    e.preventDefault();
-    if (!job) return;
-    setStatus("sending");
-    try {
-      const token = executeRecaptcha ? await executeRecaptcha("apply") : "";
-      const data = new FormData();
-      data.append("firstName", form.firstName);
-      data.append("lastName", form.lastName);
-      data.append("email", form.email);
-      data.append("phone", form.phone);
-      data.append("message", form.message);
-      data.append("jobTitle", job.title);
-      data.append("jobLocation", job.location);
-      data.append("recaptchaToken", token);
-      if (form.resume) data.append("resume", form.resume);
-      if (form.coverLetter) data.append("coverLetter", form.coverLetter);
+  const handleBlur = (name: FieldName) => {
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    setErrors((prev) => ({ ...prev, [name]: validateField(name, form[name]) }));
+  };
 
-      const res = await fetch("/api/apply", { method: "POST", body: data });
-      if (!res.ok) throw new Error("Network error");
-      setStatus("success");
-    } catch {
-      setStatus("idle");
-      alert("Something went wrong. Please try again or email us directly at careers@logicware.tech");
-    }
-  }, [form, job, executeRecaptcha]);
+  const handlePhoneChange = (value: string) => {
+    setFieldValue("phone", value);
+  };
+
+  const handleFileChange = (name: "resume" | "coverLetter", file: File | null) => {
+    setForm((prev) => ({ ...prev, [name]: file }));
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    setErrors((prev) => ({ ...prev, [name]: validateField(name, file) }));
+  };
+
+  const handleSubmit = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+      if (!job) return;
+      setSubmitError(null);
+
+      const allErrors = validateAll(form);
+      setErrors(allErrors);
+      setTouched(
+        Object.fromEntries((Object.keys(form) as FieldName[]).map((key) => [key, true])) as Partial<
+          Record<FieldName, boolean>
+        >
+      );
+
+      const firstInvalid = (Object.keys(allErrors) as FieldName[]).find((key) => allErrors[key]);
+      if (firstInvalid) {
+        document.getElementById(firstInvalid)?.focus();
+        return;
+      }
+
+      setStatus("sending");
+      try {
+        const token = executeRecaptcha ? await executeRecaptcha("apply") : "";
+        const data = new FormData();
+        data.append("firstName", form.firstName);
+        data.append("lastName", form.lastName);
+        data.append("email", form.email);
+        data.append("phone", form.phone);
+        data.append("message", form.message);
+        data.append("jobTitle", job.title);
+        data.append("jobLocation", job.location);
+        data.append("recaptchaToken", token);
+        if (form.resume) data.append("resume", form.resume);
+        if (form.coverLetter) data.append("coverLetter", form.coverLetter);
+
+        const res = await fetch("/api/apply", { method: "POST", body: data });
+
+        if (res.status === 400) {
+          const responseData = await res.json().catch(() => null);
+          if (responseData?.errors) {
+            setErrors((prev) => ({ ...prev, ...responseData.errors }));
+          }
+          setStatus("idle");
+          setSubmitError(responseData?.error ?? "Please fix the highlighted fields and try again.");
+          return;
+        }
+
+        if (res.status === 403 || res.status === 429) {
+          const responseData = await res.json().catch(() => null);
+          setStatus("idle");
+          setSubmitError(responseData?.error ?? "We couldn't process that submission. Please try again shortly.");
+          return;
+        }
+
+        if (!res.ok) throw new Error("Network error");
+        setStatus("success");
+      } catch {
+        setStatus("idle");
+        setSubmitError("Something went wrong. Please try again or email us directly at careers@logicware.tech");
+      }
+    },
+    [form, job, executeRecaptcha]
+  );
+
+  const fieldClass = (name: FieldName) => `${inputClasses} ${errors[name] && touched[name] ? inputErrorClasses : ""}`;
 
   if (!job) {
     return (
@@ -220,20 +332,21 @@ export default function JobDetailPage() {
           </div>
         </section>
 
-        {/* Details + form */}
-        <section className="px-6 pb-32">
-          <div className="max-w-[960px] mx-auto flex flex-col lg:flex-row gap-10 items-start">
-            {/* Details */}
-            <div className="flex-1 w-full flex flex-col gap-8">
-              <ChecklistSection title="What You'll Do" items={job.responsibilities} />
-              <ChecklistSection title="What We're Looking For" items={job.requirements} />
-              <ChecklistSection title="Nice to Have" items={job.niceToHave} />
-            </div>
+        {/* Job description */}
+        <section className="px-6 pb-16">
+          <div className="max-w-[760px] mx-auto flex flex-col gap-8">
+            <ChecklistSection title="What You'll Do" items={job.responsibilities} />
+            <ChecklistSection title="What We're Looking For" items={job.requirements} />
+            <ChecklistSection title="Nice to Have" items={job.niceToHave} />
+          </div>
+        </section>
 
-            {/* Application form */}
+        {/* Application form */}
+        <section className="px-6 pb-32">
+          <div className="max-w-[760px] mx-auto">
             <div
               id="apply"
-              className="w-full lg:w-[420px] flex-shrink-0 rounded-[20px] p-8 bg-[var(--color-surface)] border border-[rgba(0,122,255,0.2)]"
+              className="w-full rounded-[20px] p-8 bg-[var(--color-surface)] border border-[rgba(0,122,255,0.2)]"
             >
               {status === "success" ? (
                 <div className="flex flex-col items-center text-center py-6">
@@ -261,7 +374,7 @@ export default function JobDetailPage() {
                   <p className="text-xs text-[var(--color-text-muted)] mb-2">
                     Fields marked <span className="text-red-500">*</span> are required.
                   </p>
-                  <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                  <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="firstName" className={labelClasses}>
@@ -271,11 +384,15 @@ export default function JobDetailPage() {
                           id="firstName"
                           name="firstName"
                           type="text"
+                          autoComplete="given-name"
                           required
                           value={form.firstName}
                           onChange={handleChange}
-                          className={inputClasses}
+                          onBlur={() => handleBlur("firstName")}
+                          className={fieldClass("firstName")}
+                          aria-invalid={Boolean(errors.firstName && touched.firstName)}
                         />
+                        <FieldError message={touched.firstName ? errors.firstName : null} />
                       </div>
                       <div>
                         <label htmlFor="lastName" className={labelClasses}>
@@ -285,11 +402,15 @@ export default function JobDetailPage() {
                           id="lastName"
                           name="lastName"
                           type="text"
+                          autoComplete="family-name"
                           required
                           value={form.lastName}
                           onChange={handleChange}
-                          className={inputClasses}
+                          onBlur={() => handleBlur("lastName")}
+                          className={fieldClass("lastName")}
+                          aria-invalid={Boolean(errors.lastName && touched.lastName)}
                         />
+                        <FieldError message={touched.lastName ? errors.lastName : null} />
                       </div>
                     </div>
 
@@ -301,26 +422,30 @@ export default function JobDetailPage() {
                         id="email"
                         name="email"
                         type="email"
+                        autoComplete="email"
                         required
                         value={form.email}
                         onChange={handleChange}
-                        className={inputClasses}
+                        onBlur={() => handleBlur("email")}
+                        className={fieldClass("email")}
+                        aria-invalid={Boolean(errors.email && touched.email)}
                       />
+                      <FieldError message={touched.email ? errors.email : null} />
                     </div>
 
                     <div>
                       <label htmlFor="phone" className={labelClasses}>
                         Phone Number<Req />
                       </label>
-                      <input
+                      <PhoneField
                         id="phone"
                         name="phone"
-                        type="tel"
-                        required
                         value={form.phone}
-                        onChange={handleChange}
-                        className={inputClasses}
+                        onChange={handlePhoneChange}
+                        onBlur={() => handleBlur("phone")}
+                        error={touched.phone ? errors.phone : null}
                       />
+                      <FieldError message={touched.phone ? errors.phone : null} />
                     </div>
 
                     <FileUploadField
@@ -328,14 +453,16 @@ export default function JobDetailPage() {
                       label="Resume"
                       required
                       file={form.resume}
-                      onChange={(file) => setForm((prev) => ({ ...prev, resume: file }))}
+                      error={touched.resume ? errors.resume : null}
+                      onChange={(file) => handleFileChange("resume", file)}
                     />
 
                     <FileUploadField
                       id="coverLetter"
                       label="Cover Letter (optional)"
                       file={form.coverLetter}
-                      onChange={(file) => setForm((prev) => ({ ...prev, coverLetter: file }))}
+                      error={touched.coverLetter ? errors.coverLetter : null}
+                      onChange={(file) => handleFileChange("coverLetter", file)}
                     />
 
                     <div>
@@ -349,25 +476,35 @@ export default function JobDetailPage() {
                         required
                         value={form.message}
                         onChange={handleChange}
-                        className={inputClasses}
+                        onBlur={() => handleBlur("message")}
+                        className={fieldClass("message")}
                         placeholder="Tell us briefly about your relevant experience..."
+                        aria-invalid={Boolean(errors.message && touched.message)}
                       />
+                      <FieldError message={touched.message ? errors.message : null} />
                     </div>
 
-                    <label className="flex items-start gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="consent"
-                        required
-                        checked={form.consent}
-                        onChange={handleChange}
-                        className="mt-1 w-4 h-4 rounded border-[var(--color-border-light)] bg-[var(--color-surface-3)] text-blue accent-[#007AFF] focus:ring-[rgba(0,122,255,0.4)]"
-                      />
-                      <span className="text-sm text-[var(--color-text-secondary)]">
-                        I confirm this information is accurate and I consent
-                        to being contacted about this role.
-                      </span>
-                    </label>
+                    <div>
+                      <label className="flex items-start gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          name="consent"
+                          required
+                          checked={form.consent}
+                          onChange={handleChange}
+                          className="mt-1 w-4 h-4 rounded border-[var(--color-border-light)] bg-[var(--color-surface-3)] text-blue accent-[#007AFF] focus:ring-[rgba(0,122,255,0.4)]"
+                        />
+                        <span className="text-sm text-[var(--color-text-secondary)]">
+                          I confirm this information is accurate and I consent
+                          to being contacted about this role.
+                        </span>
+                      </label>
+                      <FieldError message={touched.consent ? errors.consent : null} />
+                    </div>
+
+                    {submitError && (
+                      <p className="text-sm text-red-500 -mt-1">{submitError}</p>
+                    )}
 
                     <button
                       type="submit"

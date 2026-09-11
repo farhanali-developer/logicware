@@ -1,0 +1,47 @@
+# Logicware LLC
+
+> Logicware LLC is a US-registered, HIPAA-compliant dental billing company based in Wilmington, Delaware. It provides end-to-end revenue cycle management for solo dentists and small dental practices across the United States: insurance verification, claim submission, payment posting, denial management, monthly reporting, and provider credentialing.
+
+Logicware works with general dentists, orthodontists, periodontists, endodontists, oral surgeons, and pediatric dentists who want claims submitted daily rather than batched monthly, and billing handled by specialists fluent in CDT codes and payer-specific dental rules rather than a generalist medical billing company. Every client relationship begins with a signed Business Associate Agreement (BAA) before any patient data is handled, and with a free, no-obligation billing audit of the practice's last 30 days of claims. There is no setup fee and no long-term contract.
+
+Billing operations run from a remote team based in Karachi, Pakistan, working US business hours; sales and client success are based in the United States.
+
+## Services
+
+- [Insurance Verification](https://logicware.tech/services/insurance-verification): Verifies in-network and out-of-network benefits, annual maximums, deductibles, and frequency limits before a patient's first appointment.
+- [Claim Submission](https://logicware.tech/services/claim-submission): Daily electronic claim submission via clearinghouse using the ADA Dental Claim Form, scrubbed for CDT code and attachment errors before submission.
+- [Payment Posting](https://logicware.tech/services/payment-posting): EOB and ERA payment posting reconciled against contracted fee schedules, with underpayments flagged immediately.
+- [Denial Management](https://logicware.tech/services/denial-management): Denied and rejected claims reviewed daily, corrected, and resubmitted within payer deadlines, with formal appeals where warranted.
+- [Monthly Reporting](https://logicware.tech/services/monthly-reporting): Monthly PDF reports covering collections, denial trends, and accounts receivable aging in plain language.
+- [Provider Credentialing](https://logicware.tech/services/provider-credentialing): Insurance panel credentialing and re-credentialing for a flat, transparent fee per payer.
+
+## Company
+
+- [About Logicware](https://logicware.tech/about): Company story, operating values, and proof points.
+- [How It Works](https://logicware.tech/how-it-works): Step-by-step onboarding and billing process timeline, from free audit to ongoing monthly reporting.
+- [Contact / Free Billing Audit](https://logicware.tech/contact): Request a free, no-obligation review of a practice's current billing performance.
+- [Careers](https://logicware.tech/careers): Open roles in dental billing operations (Karachi, Pakistan) and sales/client success (United States, remote).
+- [HIPAA Compliance & BAA](https://logicware.tech/hipaa-baa): How Logicware maintains HIPAA compliance and what its Business Associate Agreement covers.
+
+## Blog
+
+- [5 Common Reasons Dental Claims Get Denied (And How to Fix Them)](https://logicware.tech/blogs/common-reasons-dental-claims-get-denied)
+- [CDT Codes Every Dentist Should Know: D0120 vs. D0150](https://logicware.tech/blogs/cdt-codes-d0120-vs-d0150)
+- [How to Verify Dental Insurance Benefits Before a Patient's First Visit](https://logicware.tech/blogs/verify-dental-insurance-benefits-before-first-visit)
+- [In-Network vs. Out-of-Network Billing: What Solo Dentists Need to Know](https://logicware.tech/blogs/in-network-vs-out-of-network-dental-billing)
+- [Credentialing 101: How Long Does It Really Take?](https://logicware.tech/blogs/dental-credentialing-101-how-long-does-it-take)
+- [Why Daily Claim Submission Beats Monthly Batching](https://logicware.tech/blogs/daily-claim-submission-vs-monthly-batching)
+- [Reading Your EOB: A Plain-English Guide for Dentists](https://logicware.tech/blogs/reading-your-eob-plain-english-guide-dentists)
+- [A HIPAA Compliance Checklist for Outsourced Billing Partners](https://logicware.tech/blogs/hipaa-compliance-checklist-outsourced-dental-billing)
+- [CDT Codes for Dental Billing: A Complete Guide for Dentists (2025)](https://logicware.tech/blogs/cdt-codes-dental-billing-guide-2025): Full breakdown of the CDT codes used in general dentistry, documentation requirements, and the coding mistakes that trigger downgrades and denials.
+- [How to Get Credentialed with Dental Insurance Panels in Delaware](https://logicware.tech/blogs/dental-insurance-credentialing-delaware-delta-metlife-cigna): Step-by-step credentialing guide covering Delta Dental, MetLife, Cigna Dental, Guardian, and Aetna Dental.
+- [Superbill vs. Direct Insurance Billing: What Solo Dentists Need to Know](https://logicware.tech/blogs/superbill-vs-direct-insurance-billing-dentists)
+- [The Most Common Dental Insurance Claim Denials, and How to Fix Them](https://logicware.tech/blogs/dental-insurance-claim-denials-how-to-fix)
+- [Should You Outsource Your Dental Billing?](https://logicware.tech/blogs/should-you-outsource-dental-billing)
+- [Delaware Medicaid Dental Billing: What Dentists Need to Know](https://logicware.tech/blogs/delaware-medicaid-dental-billing-dentaquest)
+
+## Optional
+
+- [Privacy Policy](https://logicware.tech/privacy-policy)
+- [Terms of Service](https://logicware.tech/terms-of-service)
+- [Cookie Policy](https://logicware.tech/cookie-policy)

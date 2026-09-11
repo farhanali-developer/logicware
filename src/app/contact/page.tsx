@@ -7,6 +7,19 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageBanner from "@/components/ui/PageBanner";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
+import PhoneField from "@/components/ui/PhoneField";
+import FieldError from "@/components/ui/FieldError";
+import Req from "@/components/ui/Req";
+import { CONTACT_ROLES, PRACTICE_SIZES, CONTACT_SOURCES } from "@/lib/formOptions";
+import {
+  sanitizeNameInput,
+  validateName,
+  validateEmail,
+  validatePhone,
+  validateRequiredText,
+  validateOptionalText,
+  validateChoice,
+} from "@/lib/validation";
 
 interface FormState {
   firstName: string;
@@ -22,22 +35,63 @@ interface FormState {
   consent: boolean;
 }
 
+type FieldName = keyof FormState;
+
 const INITIAL_STATE: FormState = {
   firstName: "",
   lastName: "",
   practiceName: "",
   email: "",
   phone: "",
-  role: "General Dentist (DDS/DMD)",
-  practiceSize: "Solo",
+  role: CONTACT_ROLES[0],
+  practiceSize: PRACTICE_SIZES[0],
   ehr: "",
   challenge: "",
-  source: "Google",
+  source: CONTACT_SOURCES[0],
   consent: false,
 };
 
+function validateField(name: FieldName, value: FormState[FieldName]): string | null {
+  switch (name) {
+    case "firstName":
+      return validateName(value as string, "First name");
+    case "lastName":
+      return validateName(value as string, "Last name");
+    case "practiceName":
+      return validateRequiredText(value as string, "Practice name", { max: 150 });
+    case "email":
+      return validateEmail(value as string);
+    case "phone":
+      return validatePhone(value as string, false);
+    case "role":
+      return validateChoice(value as string, CONTACT_ROLES, "role");
+    case "practiceSize":
+      return validateChoice(value as string, PRACTICE_SIZES, "practice size");
+    case "ehr":
+      return validateOptionalText(value as string, "Practice management software", 150);
+    case "challenge":
+      return validateOptionalText(value as string, "Main challenge", 2000);
+    case "source":
+      return validateChoice(value as string, CONTACT_SOURCES, "source");
+    case "consent":
+      return value ? null : "Please confirm to continue.";
+    default:
+      return null;
+  }
+}
+
+function validateAll(values: FormState): Record<FieldName, string | null> {
+  const result = {} as Record<FieldName, string | null>;
+  (Object.keys(values) as FieldName[]).forEach((key) => {
+    result[key] = validateField(key, values[key]);
+  });
+  return result;
+}
+
 const inputClasses =
   "w-full rounded-lg px-4 py-3 text-[15px] font-poppins text-[var(--color-text-primary)] bg-[var(--color-surface-3)] border border-[var(--color-border-strong)] placeholder-[var(--color-text-faint)] transition-all duration-200 focus:outline-none focus:border-blue focus:bg-[rgba(0,122,255,0.05)] focus:ring-[3px] focus:ring-[rgba(0,122,255,0.1)]";
+
+const inputErrorClasses = "border-red-500 focus:border-red-500 focus:ring-[rgba(239,68,68,0.15)]";
 
 const labelClasses = "block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5";
 
@@ -92,7 +146,10 @@ const QUICK_STATS = [
 
 export default function ContactPage() {
   const [form, setForm] = useState<FormState>(INITIAL_STATE);
+  const [errors, setErrors] = useState<Partial<Record<FieldName, string | null>>>({});
+  const [touched, setTouched] = useState<Partial<Record<FieldName, boolean>>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "success">("idle");
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
@@ -104,35 +161,92 @@ export default function ContactPage() {
     );
   }, []);
 
+  const setFieldValue = (name: FieldName, value: FormState[FieldName]) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (touched[name]) {
+      setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
+    }
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
+    const field = name as FieldName;
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
-      setForm((prev) => ({ ...prev, [name]: checked }));
-    } else {
-      setForm((prev) => ({ ...prev, [name]: value }));
+      setFieldValue(field, checked);
+      return;
     }
+    const nextValue = field === "firstName" || field === "lastName" ? sanitizeNameInput(value) : value;
+    setFieldValue(field, nextValue);
   };
 
-  const handleSubmit = useCallback(async (e: FormEvent) => {
-    e.preventDefault();
-    setStatus("sending");
-    try {
-      const token = executeRecaptcha ? await executeRecaptcha("contact") : "";
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, recaptchaToken: token }),
-      });
-      if (!res.ok) throw new Error("Network error");
-      setStatus("success");
-    } catch {
-      setStatus("idle");
-      alert("Something went wrong. Please try again or email us directly at contact@logicware.tech");
-    }
-  }, [form, executeRecaptcha]);
+  const handleBlur = (name: FieldName) => {
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    setErrors((prev) => ({ ...prev, [name]: validateField(name, form[name]) }));
+  };
+
+  const handlePhoneChange = (value: string) => {
+    setFieldValue("phone", value);
+  };
+
+  const handleSubmit = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+      setSubmitError(null);
+
+      const allErrors = validateAll(form);
+      setErrors(allErrors);
+      setTouched(
+        Object.fromEntries((Object.keys(form) as FieldName[]).map((key) => [key, true])) as Partial<
+          Record<FieldName, boolean>
+        >
+      );
+
+      const firstInvalid = (Object.keys(allErrors) as FieldName[]).find((key) => allErrors[key]);
+      if (firstInvalid) {
+        document.getElementById(firstInvalid)?.focus();
+        return;
+      }
+
+      setStatus("sending");
+      try {
+        const token = executeRecaptcha ? await executeRecaptcha("contact") : "";
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...form, recaptchaToken: token }),
+        });
+
+        if (res.status === 400) {
+          const data = await res.json().catch(() => null);
+          if (data?.errors) {
+            setErrors((prev) => ({ ...prev, ...data.errors }));
+          }
+          setStatus("idle");
+          setSubmitError(data?.error ?? "Please fix the highlighted fields and try again.");
+          return;
+        }
+
+        if (res.status === 403 || res.status === 429) {
+          const data = await res.json().catch(() => null);
+          setStatus("idle");
+          setSubmitError(data?.error ?? "We couldn't process that submission. Please try again shortly.");
+          return;
+        }
+
+        if (!res.ok) throw new Error("Network error");
+        setStatus("success");
+      } catch {
+        setStatus("idle");
+        setSubmitError("Something went wrong. Please try again or email us directly at contact@logicware.tech");
+      }
+    },
+    [form, executeRecaptcha]
+  );
+
+  const fieldClass = (name: FieldName) => `${inputClasses} ${errors[name] && touched[name] ? inputErrorClasses : ""}`;
 
   return (
     <>
@@ -177,80 +291,100 @@ export default function ContactPage() {
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
+                  <p className="text-xs text-[var(--color-text-muted)] -mb-2">
+                    Fields marked <Req /> are required.
+                  </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="firstName" className={labelClasses}>
-                        First Name
+                        First Name<Req />
                       </label>
                       <input
                         id="firstName"
                         name="firstName"
                         type="text"
+                        autoComplete="given-name"
                         required
                         value={form.firstName}
                         onChange={handleChange}
-                        className={inputClasses}
+                        onBlur={() => handleBlur("firstName")}
+                        className={fieldClass("firstName")}
+                        aria-invalid={Boolean(errors.firstName && touched.firstName)}
                       />
+                      <FieldError message={touched.firstName ? errors.firstName : null} />
                     </div>
                     <div>
                       <label htmlFor="lastName" className={labelClasses}>
-                        Last Name
+                        Last Name<Req />
                       </label>
                       <input
                         id="lastName"
                         name="lastName"
                         type="text"
+                        autoComplete="family-name"
                         required
                         value={form.lastName}
                         onChange={handleChange}
-                        className={inputClasses}
+                        onBlur={() => handleBlur("lastName")}
+                        className={fieldClass("lastName")}
+                        aria-invalid={Boolean(errors.lastName && touched.lastName)}
                       />
+                      <FieldError message={touched.lastName ? errors.lastName : null} />
                     </div>
                   </div>
 
                   <div>
                     <label htmlFor="practiceName" className={labelClasses}>
-                      Practice Name
+                      Practice Name<Req />
                     </label>
                     <input
                       id="practiceName"
                       name="practiceName"
                       type="text"
+                      autoComplete="organization"
                       required
                       value={form.practiceName}
                       onChange={handleChange}
-                      className={inputClasses}
+                      onBlur={() => handleBlur("practiceName")}
+                      className={fieldClass("practiceName")}
+                      aria-invalid={Boolean(errors.practiceName && touched.practiceName)}
                     />
+                    <FieldError message={touched.practiceName ? errors.practiceName : null} />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="email" className={labelClasses}>
-                        Email Address
+                        Email Address<Req />
                       </label>
                       <input
                         id="email"
                         name="email"
                         type="email"
+                        autoComplete="email"
                         required
                         value={form.email}
                         onChange={handleChange}
-                        className={inputClasses}
+                        onBlur={() => handleBlur("email")}
+                        className={fieldClass("email")}
+                        aria-invalid={Boolean(errors.email && touched.email)}
                       />
+                      <FieldError message={touched.email ? errors.email : null} />
                     </div>
                     <div>
                       <label htmlFor="phone" className={labelClasses}>
                         Phone Number (optional)
                       </label>
-                      <input
+                      <PhoneField
                         id="phone"
                         name="phone"
-                        type="tel"
                         value={form.phone}
-                        onChange={handleChange}
-                        className={inputClasses}
+                        onChange={handlePhoneChange}
+                        onBlur={() => handleBlur("phone")}
+                        error={touched.phone ? errors.phone : null}
                       />
+                      <FieldError message={touched.phone ? errors.phone : null} />
                     </div>
                   </div>
 
@@ -264,15 +398,14 @@ export default function ContactPage() {
                         name="role"
                         value={form.role}
                         onChange={handleChange}
-                        className={inputClasses}
+                        onBlur={() => handleBlur("role")}
+                        className={fieldClass("role")}
                       >
-                        {["General Dentist (DDS/DMD)", "Orthodontist", "Periodontist", "Endodontist", "Oral Surgeon", "Pediatric Dentist", "Practice Manager", "Other"].map(
-                          (option) => (
-                            <option key={option} value={option} className="bg-[var(--color-bg)]">
-                              {option}
-                            </option>
-                          )
-                        )}
+                        {CONTACT_ROLES.map((option) => (
+                          <option key={option} value={option} className="bg-[var(--color-bg)]">
+                            {option}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div>
@@ -284,9 +417,10 @@ export default function ContactPage() {
                         name="practiceSize"
                         value={form.practiceSize}
                         onChange={handleChange}
-                        className={inputClasses}
+                        onBlur={() => handleBlur("practiceSize")}
+                        className={fieldClass("practiceSize")}
                       >
-                        {["Solo", "2–5 providers", "5+ providers"].map((option) => (
+                        {PRACTICE_SIZES.map((option) => (
                           <option key={option} value={option} className="bg-[var(--color-bg)]">
                             {option}
                           </option>
@@ -305,9 +439,12 @@ export default function ContactPage() {
                       type="text"
                       value={form.ehr}
                       onChange={handleChange}
-                      className={inputClasses}
+                      onBlur={() => handleBlur("ehr")}
+                      className={fieldClass("ehr")}
                       placeholder="e.g., Dentrix, Eaglesoft, Open Dental..."
+                      aria-invalid={Boolean(errors.ehr && touched.ehr)}
                     />
+                    <FieldError message={touched.ehr ? errors.ehr : null} />
                   </div>
 
                   <div>
@@ -320,9 +457,12 @@ export default function ContactPage() {
                       rows={4}
                       value={form.challenge}
                       onChange={handleChange}
-                      className={inputClasses}
+                      onBlur={() => handleBlur("challenge")}
+                      className={fieldClass("challenge")}
                       placeholder="e.g., high denial rates, slow reimbursements, no time for billing admin..."
+                      aria-invalid={Boolean(errors.challenge && touched.challenge)}
                     />
+                    <FieldError message={touched.challenge ? errors.challenge : null} />
                   </div>
 
                   <div>
@@ -334,9 +474,10 @@ export default function ContactPage() {
                       name="source"
                       value={form.source}
                       onChange={handleChange}
-                      className={inputClasses}
+                      onBlur={() => handleBlur("source")}
+                      className={fieldClass("source")}
                     >
-                      {["Google", "Upwork", "LinkedIn", "Referral", "Other"].map((option) => (
+                      {CONTACT_SOURCES.map((option) => (
                         <option key={option} value={option} className="bg-[var(--color-bg)]">
                           {option}
                         </option>
@@ -344,20 +485,27 @@ export default function ContactPage() {
                     </select>
                   </div>
 
-                  <label className="flex items-start gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="consent"
-                      required
-                      checked={form.consent}
-                      onChange={handleChange}
-                      className="mt-1 w-4 h-4 rounded border-[var(--color-border-light)] bg-[var(--color-surface-3)] text-blue accent-[#007AFF] focus:ring-[rgba(0,122,255,0.4)]"
-                    />
-                    <span className="text-sm text-[var(--color-text-secondary)]">
-                      I confirm this information is accurate and I consent to
-                      being contacted.
-                    </span>
-                  </label>
+                  <div>
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="consent"
+                        required
+                        checked={form.consent}
+                        onChange={handleChange}
+                        className="mt-1 w-4 h-4 rounded border-[var(--color-border-light)] bg-[var(--color-surface-3)] text-blue accent-[#007AFF] focus:ring-[rgba(0,122,255,0.4)]"
+                      />
+                      <span className="text-sm text-[var(--color-text-secondary)]">
+                        I confirm this information is accurate and I consent to
+                        being contacted.
+                      </span>
+                    </label>
+                    <FieldError message={touched.consent ? errors.consent : null} />
+                  </div>
+
+                  {submitError && (
+                    <p className="text-sm text-red-500 -mt-2">{submitError}</p>
+                  )}
 
                   <button
                     type="submit"
